@@ -1,0 +1,5 @@
+{
+  "CodeGPT.apiKey": "Ollama",
+  "CodeGPT.Autocomplete.enabled": true,
+  "CodeGPT.Autocomplete.provider": "Ollama - codegpt/deepseek-coder-1.3b-typescript"
+}
