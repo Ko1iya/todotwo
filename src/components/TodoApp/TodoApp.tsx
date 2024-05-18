@@ -16,7 +16,7 @@ class TodoApp extends Component<TodoAppProps, TodoAppState> {
     this.state = {
       tasks: [
         { id: 1, taskState: "completed", content: "Completed task" },
-        { id: 2, taskState: "editing", content: "Editing task" },
+        { id: 2, taskState: "completed", content: "Editing task" },
         { id: 3, taskState: "active", content: "Active task" },
       ],
       selected: "All",

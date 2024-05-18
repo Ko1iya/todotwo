@@ -42,7 +42,7 @@ function Task(prop: TaskProps) {
             className={styles.toggle}
             type='checkbox'
             checked={taskState === "completed" ? true : false}
-            onClick={() => {
+            onChange={() => {
               toggleTaskStateCompleted(id)
             }}
           />
@@ -80,6 +80,9 @@ function Task(prop: TaskProps) {
           }}
           onKeyDown={(e) => {
             toggleEditingToActive(e, id)
+          }}
+          onBlur={() => {
+            toggleTaskStateEditing(id) // Здесь добавлен обработчик события onBlur
           }}
         />
       )}
