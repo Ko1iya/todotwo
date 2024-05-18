@@ -1,65 +1,80 @@
-import React from "react"
+import React, { useState } from "react"
 import Task from "../Task/Task"
 import styles from "./todoList.module.css"
+import { ITask, ITodoListProps } from "../../types"
 
-interface TodoListProps {}
-
-interface TodoListState {
-  tasks: Array<{
-    id: number
-    taskState: "completed" | "editing" | "active"
-    content: string
-  }>
+interface ITodoList extends ITodoListProps {
+  selected: string
+  changeContent: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idProp: number
+  ) => void
 }
 
-class TodoList extends React.Component<TodoListProps, TodoListState> {
-  constructor(props: TodoListProps) {
-    super(props)
-    this.state = {
-      tasks: [
-        { id: 1, taskState: "completed", content: "Completed task" },
-        { id: 2, taskState: "editing", content: "Editing task" },
-        { id: 3, taskState: "active", content: "Active task" },
-      ],
-    }
-  }
+const TodoList = (props: ITodoList) => {
+  const {
+    tasks,
+    toggleTaskStateCompleted,
+    deleteTask,
+    selected,
+    changeContent,
+    toggleTaskStateEditing,
+    toggleEditingToActive,
+  } = props
 
-  toggleTaskState = (id: number) => {
-    this.setState((prevState) => ({
-      tasks: prevState.tasks.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              taskState: task.taskState === "active" ? "completed" : "active",
-            }
-          : task
-      ),
-    }))
-  }
-
-  deleteTask = (id: number) => {
-    this.setState((prevState) => ({
-      tasks: prevState.tasks.filter((task) => task.id !== id),
-    }))
-  }
-
-  render() {
-    return (
-      <ul className={styles.todoList}>
-        {this.state.tasks.map((task) => (
-          <Task
-            key={task.id}
-            id={task.id}
-            taskState={task.taskState}
-            toggleTaskState={this.toggleTaskState}
-            deleteTask={this.deleteTask}
-          >
-            {task.content}
-          </Task>
-        ))}
-      </ul>
-    )
-  }
+  return (
+    <ul className={styles.todoList}>
+      {selected === "All"
+        ? tasks.map((task: ITask) => (
+            <Task
+              key={task.id}
+              id={task.id}
+              taskState={task.taskState}
+              toggleTaskStateCompleted={toggleTaskStateCompleted}
+              deleteTask={deleteTask}
+              changeContent={changeContent}
+              toggleTaskStateEditing={toggleTaskStateEditing}
+              toggleEditingToActive={toggleEditingToActive}
+            >
+              {task.content}
+            </Task>
+          ))
+        : selected === "Active"
+        ? tasks
+            .filter((task: ITask) => task.taskState === "active")
+            .map((task: ITask) => (
+              <Task
+                key={task.id}
+                id={task.id}
+                taskState={task.taskState}
+                toggleTaskStateCompleted={toggleTaskStateCompleted}
+                deleteTask={deleteTask}
+                changeContent={changeContent}
+                toggleTaskStateEditing={toggleTaskStateEditing}
+                toggleEditingToActive={toggleEditingToActive}
+              >
+                {task.content}
+              </Task>
+            ))
+        : selected === "Completed" &&
+          tasks
+            .filter((task: ITask) => task.taskState === "completed")
+            .map((task: ITask) => (
+              <Task
+                key={task.id}
+                id={task.id}
+                taskState={task.taskState}
+                toggleTaskStateCompleted={toggleTaskStateCompleted}
+                deleteTask={deleteTask}
+                changeContent={changeContent}
+                toggleTaskStateEditing={toggleTaskStateEditing}
+                toggleEditingToActive={toggleEditingToActive}
+              >
+                {task.content}
+              </Task>
+            ))}
+    </ul>
+  )
 }
 
 export default TodoList

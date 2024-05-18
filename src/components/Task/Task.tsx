@@ -3,9 +3,18 @@ import { formatDistanceToNow } from "date-fns"
 interface TaskProps {
   children: string
   taskState?: string
-  toggleTaskState: (id: number) => void
+  toggleTaskStateCompleted: (id: number) => void
+  toggleTaskStateEditing: (id: number) => void
   id: number
   deleteTask: (id: number) => void
+  changeContent: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idProp: number
+  ) => void
+  toggleEditingToActive: (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    idProp: number
+  ) => void
 }
 
 function Task(prop: TaskProps) {
@@ -14,7 +23,16 @@ function Task(prop: TaskProps) {
     includeSeconds: true,
   })
 
-  const { children, taskState, id, toggleTaskState, deleteTask } = prop
+  const {
+    children,
+    taskState,
+    id,
+    toggleTaskStateCompleted,
+    deleteTask,
+    changeContent,
+    toggleTaskStateEditing,
+    toggleEditingToActive,
+  } = prop
 
   return (
     <li className={taskState ? styles[taskState] : undefined}>
@@ -25,21 +43,26 @@ function Task(prop: TaskProps) {
             type='checkbox'
             checked={taskState === "completed" ? true : false}
             onClick={() => {
-              toggleTaskState(id)
+              toggleTaskStateCompleted(id)
             }}
           />
           <label>
             <span
               className={styles.description}
               onClick={() => {
-                toggleTaskState(id)
+                toggleTaskStateCompleted(id)
               }}
             >
               {children}
             </span>
             <span className={styles.created}>created {timeCreated}</span>
           </label>
-          <button className={`${styles.icon} ${styles.iconEdit}`}></button>
+          <button
+            className={`${styles.icon} ${styles.iconEdit}`}
+            onClick={() => {
+              toggleTaskStateEditing(id)
+            }}
+          ></button>
           <button
             className={`${styles.icon} ${styles.iconDestroy}`}
             onClick={() => {
@@ -48,7 +71,17 @@ function Task(prop: TaskProps) {
           ></button>
         </div>
       ) : (
-        <input type='text' className={styles.edit} value='Editing task' />
+        <input
+          type='text'
+          className={styles.edit}
+          value={children}
+          onChange={(e) => {
+            changeContent(e, id)
+          }}
+          onKeyDown={(e) => {
+            toggleEditingToActive(e, id)
+          }}
+        />
       )}
     </li>
   )
