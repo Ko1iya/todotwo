@@ -108,7 +108,7 @@ class TodoApp extends Component<TodoAppProps, TodoAppState> {
   }
 
   handlerAddTask = (value: string) => {
-    let newTask: ITask = {
+    const newTask: ITask = {
       id: this.state.tasks.length + 1,
       taskState: "active",
       content: value,

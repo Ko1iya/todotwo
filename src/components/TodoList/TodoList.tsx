@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import Task from "../Task/Task"
 import styles from "./todoList.module.css"
 import { ITask, ITodoListProps } from "../../types"

@@ -1,4 +1,4 @@
-import styles from "./butFilter.module.css"
+// import styles from "./butFilter.module.css"
 import React, { Component } from "react"
 
 interface ButFilterProps {
